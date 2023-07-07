@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  app-presensi:
+    build: ./app
+    restart: always
+    ports:
+      - "8080:80"
+    container_name: app-presensi
+    image: app-presensi
+    environment:
+      - DB_URL=sqlserver://DB_USERNAME:DB_PASS@_@mssql-presensi:1433?database=presensi&charset=utf8&parseTime=True&loc=Local
+      - PORT=80
+      - CALENDARIFIC_API_KEY=YOUR_API_KEY
+      - SECRET_KEY=YOUR_SECRET_KEY
+  
+  mssql-presensi:
+    build: ./database
+    restart: always
+    ports:
+      - "1431:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YOUR_MSSQL_PASS
+    volumes:
+      - ./database/sql-server:/var/opt/mssql
+    container_name: mssql-presensi
+    image: mssql-presensi
