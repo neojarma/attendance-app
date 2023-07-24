@@ -2,6 +2,7 @@ package repo
 
 import (
 	"errors"
+	"presensi/helper"
 	"presensi/model"
 
 	"gorm.io/gorm"
@@ -18,7 +19,12 @@ func NewWorkTimeRepository(db *gorm.DB) *WorkTimesRepository {
 }
 
 func (r *WorkTimesRepository) NewWorkTime(payload *model.WorkTimes) error {
-	return r.dB.Create(payload).Error
+	err := r.dB.Create(payload).Error
+	if err != nil {
+		return helper.SQLErrorParser(err.Error())
+	}
+
+	return nil
 }
 
 func (r *WorkTimesRepository) GetWorkTimesByID(payload string) (*model.WorkTimes, error) {

@@ -3,6 +3,7 @@ package repo
 import (
 	"errors"
 	"log"
+	"presensi/helper"
 	"presensi/model"
 
 	"gorm.io/gorm"
@@ -19,7 +20,12 @@ func NewHolidayRepository(db *gorm.DB) *HolidayRepository {
 }
 
 func (r *HolidayRepository) NewHoliday(payload *model.Holidays) error {
-	return r.dB.Create(payload).Error
+	err := r.dB.Create(payload).Error
+	if err != nil {
+		return helper.SQLErrorParser(err.Error())
+	}
+
+	return nil
 }
 
 func (r *HolidayRepository) GetHolidayByID(payload string) (*model.Holidays, error) {
