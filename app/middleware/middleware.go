@@ -18,7 +18,7 @@ func NewMiddleware() *Middleware {
 func (middleware *Middleware) OnlyAdmin(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
-		cookie, err := c.Cookie("access_token")
+		cookie, err := c.Cookie("access-token")
 		if err != nil {
 			return c.JSON(http.StatusUnauthorized, model.Response{
 				Status:  "failed",
